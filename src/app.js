@@ -27,5 +27,9 @@ app.use(express.static("public"));
 // Apply express.urlencoded middleware with extended set to true and a limit of 16KB
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 
+import UserRouter from "./routes/user.routes.js";
+
+app.use("/api/v1/users", UserRouter);
+
 // Export the app to be used in other modules
 export { app };
