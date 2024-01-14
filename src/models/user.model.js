@@ -1,5 +1,5 @@
-import mongoose, { Schema, Shema } from "mongoose";
-import jwt from "jasonwebtoken";
+import mongoose, { Schema } from "mongoose";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 const userSchema = new Schema(
@@ -16,22 +16,22 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      lowercase: true,
+      lowecase: true,
       trim: true,
     },
     fullname: {
       type: String,
       required: true,
-      lowercase: true,
       trim: true,
       index: true,
     },
-    avatar: {
-      type: String, //cloudinary url
-      required: true,
-    },
+
     cover: {
       type: String,
+    },
+    avatar: {
+      type: String,
+      required: true,
     },
     watchHistory: [
       {
@@ -43,7 +43,7 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required"],
     },
-    refreshToken: {
+    refreshtoken: {
       type: String,
     },
   },
@@ -51,11 +51,12 @@ const userSchema = new Schema(
     timestamps: true,
   }
 );
+
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();
   }
-  this.password = bcrypt.hash(this.password, 10);
+  this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
@@ -78,7 +79,7 @@ userSchema.methods.generateAcessToken = function () {
   );
 };
 
-userSchema.methods.refreshToken = function () {
+userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {
       id: this._id,

@@ -31,5 +31,6 @@ import UserRouter from "./routes/user.routes.js";
 
 app.use("/api/v1/users", UserRouter);
 
+
 // Export the app to be used in other modules
 export { app };
