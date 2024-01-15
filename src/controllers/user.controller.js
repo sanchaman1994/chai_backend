@@ -118,7 +118,7 @@ const logInUser = asyncHandler(async (req, res) => {
   if (!isPasswordCorrect) {
     throw new ApiError(401, "Password Incorrect kindly check and retry.")
   }
-  const { accessToken, refreshToken } = await generateAccessAndRefreshTojens(user._id);
+  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id);
 
   const loggedInUser = await User.findById(user._id).select("-password -refreshtoken")
 
@@ -163,6 +163,8 @@ const logoutUser = asyncHandler(async (req, res) => {
     .clearCookie("refreshtoken", options) // Clear the refresh token cookie
     .json(new ApiResponse(200, {}, "user logged out successfully")); // Return success message
 });
+
+
 
 
 // This function is responsible for refreshing the access token
